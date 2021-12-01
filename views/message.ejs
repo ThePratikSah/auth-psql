@@ -1,0 +1,13 @@
+<% if (error.length>0) { %>
+<div class="message">
+  <span><%= error %></span>
+</div>
+<% } %> <% if (error_msg.length>0) { %>
+<div class="message">
+  <span id="errorMessage"><%= error_msg %></span>
+</div>
+<% } %> <% if (success_msg.length>0) { %>
+<div class="message">
+  <span id="message"><%= success_msg %></span>
+</div>
+<% } %>
