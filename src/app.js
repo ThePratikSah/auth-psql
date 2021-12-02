@@ -7,6 +7,7 @@ import passport from "passport";
 import Routes from "./routes/routes";
 import { strategy } from "./utils/auth";
 import sequelize from "./utils/db";
+import { googleStrategy } from "./utils/google-auth";
 const SequelizeStore = connectSession(session.Store);
 
 const app = express();
@@ -33,6 +34,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 strategy(passport);
+googleStrategy();
 
 app.use((err, req, res, next) => {
   if (err.code !== "EBADCSRFTOKEN") return next(err);
@@ -46,9 +48,9 @@ app.use((err, req, res, next) => {
 app.use((req, res, next) => {
   // provided by express
   // .locals attaches to every res because they only exist in views that are rendered
-  res.locals.isAuthenticated = req.session.auth;
-  res.locals.name = req.session.name;
-  res.locals.email = req.session.email;
+  // res.locals.isAuthenticated = req.session.auth;
+  // res.locals.name = req.session.name;
+  // res.locals.email = req.session.email;
   res.locals.success_msg = req.flash("success_msg");
   res.locals.error_msg = req.flash("error_msg");
   res.locals.error = req.flash("error");

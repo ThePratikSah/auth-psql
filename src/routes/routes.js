@@ -57,6 +57,20 @@ router.post(
   })
 );
 
+// login with google
+router.get(
+  "/auth/google",
+  passport.authenticate("google", { scope: ["email", "profile"] })
+);
+
+router.get(
+  "/google/callback",
+  passport.authenticate("google", {
+    successRedirect: "/",
+    failureRedirect: "/login",
+  })
+);
+
 // logout user here
 router.post("/logout", (req, res) => {
   req.session.destroy((err) => {
