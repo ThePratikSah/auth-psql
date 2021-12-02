@@ -1,13 +1,18 @@
 import express from "express";
 import { body } from "express-validator";
-import { login, register } from "../controllers/controller";
+import passport from "passport";
+import { register } from "../controllers/controller";
 import User from "../Models/user";
 const router = express.Router();
 
 router.get("/", (req, res) => {
-  if (!req.session.auth) return res.redirect("/login");
+  if (!req.user) return res.redirect("/login");
   // this will fetch all the user's email and will show it here in a table
-  res.render("index", { title: "Dashboard" });
+  res.render("index", {
+    title: "Dashboard",
+    email: req.user.email,
+    name: req.user.name,
+  });
 });
 
 // for loading the login page
@@ -46,7 +51,10 @@ router.post(
   "/login",
   body("email").isEmail(),
   body("password").isLength({ min: 6 }),
-  login
+  passport.authenticate("local", {
+    successRedirect: "/",
+    failureRedirect: "/login",
+  })
 );
 
 // logout user here

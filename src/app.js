@@ -3,7 +3,9 @@ import connectSession from "connect-session-sequelize";
 import express from "express";
 import session from "express-session";
 import helmet from "helmet";
+import passport from "passport";
 import Routes from "./routes/routes";
+import { strategy } from "./utils/auth";
 import sequelize from "./utils/db";
 const SequelizeStore = connectSession(session.Store);
 
@@ -25,6 +27,12 @@ app.use(
     }),
   })
 );
+
+// initialize passport
+app.use(passport.initialize());
+app.use(passport.session());
+
+strategy(passport);
 
 app.use((err, req, res, next) => {
   if (err.code !== "EBADCSRFTOKEN") return next(err);
