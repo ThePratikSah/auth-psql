@@ -5,8 +5,9 @@ import session from "express-session";
 import helmet from "helmet";
 import passport from "passport";
 import Routes from "./routes/routes";
+import TodoRoutes from "./routes/todos";
 import { strategy } from "./utils/auth";
-import sequelize from "./utils/db";
+import sequelize, { PORT } from "./utils/db";
 import { googleStrategy } from "./utils/google-auth";
 const SequelizeStore = connectSession(session.Store);
 
@@ -74,12 +75,18 @@ app.set("view engine", "ejs");
 
 // routes
 app.use("/", Routes);
+app.use("/todos", TodoRoutes);
+
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send("Something broke!");
+});
 
 sequelize
   .sync()
   .then(
-    app.listen(3000, () => {
-      console.log("Server running on port 3000");
+    app.listen(PORT, () => {
+      console.log("Server running on port " + PORT);
     })
   )
   .catch((e) => console.log(e));

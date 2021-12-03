@@ -5,6 +5,7 @@ import Sequelize from "sequelize";
 dotenv.config();
 
 const DB_URI = process.env.DB_URI;
+export const PORT = process.env.PORT;
 
 // logging: false, will disable logging of every sql query
 const sequelize = new Sequelize(DB_URI, { logging: false });
