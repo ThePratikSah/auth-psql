@@ -1,0 +1,8 @@
+version: "3"
+services:
+  psql-auth-db:
+    image: postgres:9.6
+    ports:
+      - 5434:5432
+    environment:
+      - POSTGRES_PASSWORD=root
